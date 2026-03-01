@@ -7,16 +7,22 @@ const foodPartnerRoutes = require('./routes/food-partner.routes');
 const cors = require('cors');
 
 const app = express();
+
+// Allow both local + deployed frontend
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: [
+        "http://localhost:5173", // local dev
+        process.env.FRONTEND_URL // deployed frontend (Vercel)
+    ],
     credentials: true
 }));
+
 app.use(cookieParser());
 app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("Hello World");
-})
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/food', foodRoutes);
